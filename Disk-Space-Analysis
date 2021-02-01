@@ -1,0 +1,86 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+#
+# Complete the 'segment' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. INTEGER x
+#  2. INTEGER_ARRAY space
+#
+
+import collections
+
+def segment(x, space):
+    
+    ## Version 1:
+    # sizeSpace = len(space)
+    # l, r = 0, 0
+    # subst = space[:sizeSpace]
+    # minSpace = min(subst)
+    # r = sizeSpace - 1
+    
+    # while l < len(space) - 1 and r < len(space) - 1:
+    #     toRemove = space[l]
+    #     l += 1
+    #     r += 1
+    #     if toRemove <= minSpace:
+    #         ansSpace = space[l:r+1]
+    #         minSpace = max(minSpace, min(ansSpace))
+    #     else:
+    #         ansSpace = min(minSpace, space[r])
+    #         minSpace = max(minSpace, ansSpace)
+    
+    # return minSpace
+
+    ## Version 2:
+    # q = collections.deque()
+    # result = min(space[:x])
+    # for i in range(len(space)):
+    #     while q and q[0] < i - x - 1:
+    #         q.popleft()
+    #     while q and space[q[-1]] > space[i]:
+    #         q.pop()
+    #     q.append(i)
+        
+    #     if i >= x -1:
+    #         result = max(result, space[q[0]])
+            
+    # return result
+
+    ## Version 3:
+    maxOverall = min(space[0:x])
+    for i in range(1, len(space) - x):
+        maxOverall = max(maxOverall, min(space[i:x+i]))
+    
+    return maxOverall
+    
+
+
+
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    x = int(input().strip())
+
+    space_count = int(input().strip())
+
+    space = []
+
+    for _ in range(space_count):
+        space_item = int(input().strip())
+        space.append(space_item)
+
+    result = segment(x, space)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
